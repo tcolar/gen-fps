@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Handles loading the terrain resources
 public class TerrainResources
 {
     public Texture2D textureGrass;
@@ -39,8 +40,7 @@ public class TerrainResources
             LoadPrefab("Prefabs/rocks/rock1"),
             LoadPrefab("Prefabs/rocks/rock2"),
             LoadPrefab("Prefabs/rocks/rock3"),
-            //LoadPrefab("Prefabs/rocks/rock4"),
-            LoadPrefab("Prefabs/house"),
+            LoadPrefab("Prefabs/rocks/rock4"),
         };
         /*foreach (GameObject rock in rocks)
         {

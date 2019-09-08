@@ -15,6 +15,7 @@ public class LayersHelper
         this.alphaMaps = new float[alphamapResolution, alphamapResolution, layerTextures.Count];
         this.layers = new TerrainLayer[layerTextures.Count];
         int index = 0;
+        // Create the layers for each biome texture
         foreach (KeyValuePair<Biome, Texture2D> keyValue in layerTextures)
         {
             TerrainLayer layer = createLayer(keyValue.Key, keyValue.Value);
@@ -24,6 +25,7 @@ public class LayersHelper
         }
     }
 
+    // Set the biome at a given alphamap location
     public void SetAt(int x, int z, Biome name, float value = 1f)
     {
         // Not sure why those are stored "backward" but whatever ....

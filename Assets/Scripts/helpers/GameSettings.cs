@@ -17,8 +17,13 @@ public class GameSettings : MonoBehaviour
     public static float mouseVertMin = -70;
     public static float mouseVertMax = 80;
     public static float gravity = 20f;
-    public static int terrainWidth = 256;
     public static int terrainMaxAltitude = 300;
     public static int terrainHeightmapRes = 256;
     public static int terrainAlphamapRes = 256;
+    public static int terrainRes = 2048;
+
+    public static float factor_a2t = terrainRes / terrainAlphamapRes;
+    public static float factor_t2a = terrainAlphamapRes / terrainRes;
+    public static float factor_h2a = terrainAlphamapRes / terrainHeightmapRes;
+    public static float factor_a2h = terrainHeightmapRes / terrainAlphamapRes;
 }

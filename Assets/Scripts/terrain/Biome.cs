@@ -41,14 +41,15 @@ public class BiomeHelper
 
     }
 
+    // Pos is the postion in the alphaMap
     public Biome GetBiomeAt(Vector2Int pos, float heigthRatio)
     {
         if (heigthRatio < 0.2f)
         { // Lava lakes
             return Biome.LAVA;
         }
-        heigthRatio += Random.Range(-0.1f, +0.1f);
         // Note: Randomize a bit the nunbers to make biome trasnstion more relaistics (not straight lines)
+        heigthRatio += Random.Range(-0.1f, +0.1f);
         float hotDist = Vector2Int.Distance(pos, hotSpot) + Random.Range(-4f, +4f);
         float wetDist = Vector2Int.Distance(pos, wetSpot) + Random.Range(-4f, +4f);
         float hotNear = hotRange * 0.75f;
@@ -56,7 +57,7 @@ public class BiomeHelper
         if (heigthRatio > 0.75f)
         {
             // Mountain tops, rocky or snowy
-            return wetDist > GameSettings.terrainAlphamapRes / 2 ? Biome.ROCKY : Biome.SNOWY;
+            return wetDist > wetRange ? Biome.ROCKY : Biome.SNOWY;
         }
         if (hotDist < hotNear)
         { // hot
@@ -76,6 +77,7 @@ public class BiomeHelper
         }
     }
 
+    // Add some items (tress, rocks) to a tile according to it's biome
     internal void AddItemsToTile(TerrainTile tile)
     {
         var trees = terrainResources.trees;
@@ -108,7 +110,7 @@ public class BiomeHelper
             case Biome.GRASSLAND:
                 if (rand < 2)
                 {
-                    AddTreeToTile(tile, rand == 0 ? trees.oakTree : trees.firTree, rand);
+                    AddTreeToTile(tile, trees.oakTree, rand);
                 }
                 break;
             case Biome.SNOWY:

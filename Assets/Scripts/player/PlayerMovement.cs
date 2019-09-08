@@ -10,6 +10,10 @@ public class PlayerMovement : MonoBehaviour
     private float vertVelocity;
     public float speed;
 
+    // Prevent going to the edge tiles (end of world)
+    private float minPositon = GameSettings.factor_a2t;
+    private float maxPosition = GameSettings.terrainRes - 2 * GameSettings.factor_a2t;
+
     private void Awake()
     {
         cc = GetComponent<CharacterController>();
@@ -26,20 +30,22 @@ public class PlayerMovement : MonoBehaviour
     {
         moveDirection = new Vector3(Input.GetAxis(Axis.HORIZONTAL), 0f,
             Input.GetAxis(Axis.VERTICAL));
-        // print("hz:" + Input.GetAxis("Horizontal"));
         moveDirection = transform.TransformDirection(moveDirection);
         moveDirection *= speed * Time.deltaTime;
 
         ApplyGravity();
 
-        if (cc.transform.position.x + moveDirection.x < 0)
+        if (cc.transform.position.x + moveDirection.x <= minPositon
+            || cc.transform.position.x + moveDirection.x >= maxPosition)
         {
-            moveDirection.x = -cc.transform.position.x;
+            moveDirection.x = 0;
         }
 
-        if (cc.transform.position.z + moveDirection.z < 0)
+
+        if (cc.transform.position.z + moveDirection.z <= minPositon
+            || cc.transform.position.z + moveDirection.z >= maxPosition)
         {
-            moveDirection.z = -cc.transform.position.z;
+            moveDirection.z = 0;
         }
 
         cc.Move(moveDirection);

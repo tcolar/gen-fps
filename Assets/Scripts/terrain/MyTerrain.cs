@@ -80,6 +80,7 @@ public class MyTerrain : MonoBehaviour
 
                 var pos = new Vector2Int(x, z);
                 biome = biomes.GetBiomeAt(pos, height);
+
                 layersHelper.SetAt(x, z, biome);
 
                 if (height < 0.5f)

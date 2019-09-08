@@ -80,6 +80,11 @@ public class BiomeHelper
     // Add some items (tress, rocks) to a tile according to it's biome
     internal void AddItemsToTile(TerrainTile tile)
     {
+        if (tile.pos.x == 0 || tile.pos.x >= GameSettings.terrainAlphamapRes - 1
+        || tile.pos.y == 0 || tile.pos.y >= GameSettings.terrainAlphamapRes - 1)
+        { // don't put stuff n the map's edges
+            return;
+        }
         var trees = terrainResources.trees;
         int rand = Random.Range(0, 40);
         if (tile.biome != Biome.LAVA && rand > 38)

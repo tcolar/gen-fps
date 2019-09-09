@@ -119,6 +119,8 @@ public class MyTerrain : MonoBehaviour
     public void addObject(Vector3 pos, GameObject prefab, bool applyGravity)
     {
         float objHeight = terrainData.GetHeight((int)(pos.x * GameSettings.factor_t2a), (int)(pos.z * GameSettings.factor_t2a));
+        pos.y += objHeight; // pos.y would usuaally be zero but maybe contain an offset value
+
         // Create the object
         var obj = Instantiate(prefab, pos, Quaternion.identity);
 

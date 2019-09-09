@@ -42,11 +42,10 @@ public class TerrainResources
             LoadPrefab("Prefabs/rocks/rock3"),
             LoadPrefab("Prefabs/rocks/rock4"),
         };
-        /*foreach (GameObject rock in rocks)
+        foreach (GameObject rock in rocks)
         {
             rock.transform.localScale = new Vector3(3, 3, 3);
-        }*/
-        rocks[3].transform.localScale = new Vector3(.6f, .6f, .6f);
+        }
 
         trees = instantiateTrees(terrain, terrainData);
     }

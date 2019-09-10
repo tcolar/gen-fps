@@ -13,12 +13,12 @@ public class MyTerrain : MonoBehaviour
     {
         UnityEngine.Random.InitState((int)GameSettings.seed);
 
-        Vector3 terrainSize = new Vector3(GameSettings.terrainAlphamapRes, GameSettings.terrainMaxAltitude, GameSettings.terrainAlphamapRes);
 
         terrainData = new TerrainData();
-        terrainData.size = terrainSize;
         terrainData.heightmapResolution = GameSettings.terrainHeightmapRes;
         terrainData.alphamapResolution = GameSettings.terrainAlphamapRes + 1;
+        Vector3 terrainSize = new Vector3(GameSettings.terrainRes, GameSettings.terrainMaxAltitude, GameSettings.terrainRes);
+        terrainData.size = terrainSize; // this HAS to be set after heightmapResolution to work !!
         float terrainCoordMax = terrainData.bounds.max.x;
 
         GameObject terrainObject = Terrain.CreateTerrainGameObject(terrainData);

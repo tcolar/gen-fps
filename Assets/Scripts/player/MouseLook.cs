@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+Control the player camera (lookAt), analog via Mouse or Touch motion
+ */
 public class MouseLook : MonoBehaviour
 {
     [SerializeField]
@@ -12,20 +15,31 @@ public class MouseLook : MonoBehaviour
 
     private int lastLookFrame;
 
+    public static int midScreen = Screen.height / 2;
 
-    // Use this for initialization
+    void Awake()
+    {
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
+    }
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    // Update is called once per frame
     void Update()
     {
         LockAndUnlockCursor();
         if (Cursor.lockState == CursorLockMode.Locked)
         {
-            LookAround();
+            if (Input.touchSupported)
+            {
+                TouchLookAround();
+            }
+            else
+            {
+                MouseLookAround();
+            }
         }
     }
 
@@ -45,18 +59,38 @@ public class MouseLook : MonoBehaviour
         }
     }
 
-    void LookAround()
+    void MouseLookAround()
     {
         currentMouseLook = new Vector2(
             Input.GetAxis(MouseAxis.MOUSE_Y), Input.GetAxis(MouseAxis.MOUSE_X));
 
-        lookAngles.x += currentMouseLook.x * GameSettings.mouseSensitivity * (GameSettings.mouseInvert ? 1f : -1f);
-        lookAngles.y += currentMouseLook.y * GameSettings.mouseSensitivity;
+        TurnCamera(true);
+    }
 
+    void TouchLookAround()
+    {
+        for (int i = 0; i != Input.touchCount; i++)
+        {
+            Touch touch = Input.GetTouch(i);
+            if (touch.position.x < midScreen) continue;
+
+            currentMouseLook = new Vector2(touch.deltaPosition.y, touch.deltaPosition.x);
+
+            TurnCamera(false);
+            return;
+        }
+    }
+
+    void TurnCamera(bool isMouse)
+    {
+        float sensitivity = isMouse ? GameSettings.mouseSensitivity : GameSettings.touchSensitivity;
+        float invert = isMouse && GameSettings.mouseInvert ? -1f : 1f;
+        lookAngles.x -= currentMouseLook.x * sensitivity * invert;
+        lookAngles.y += currentMouseLook.y * sensitivity;
         lookAngles.x = Mathf.Clamp(lookAngles.x, GameSettings.mouseVertMin, GameSettings.mouseVertMax);
-
         player.localRotation = Quaternion.Euler(lookAngles.x, lookAngles.y, 0f);
     }
+
 }
 
 

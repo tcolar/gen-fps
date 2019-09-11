@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NoiseMapGeneration : MonoBehaviour
+public class NoiseMapGenerator
 {
 
     // Generate a map using Perlin noise

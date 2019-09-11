@@ -3,27 +3,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MyTerrain : MonoBehaviour
+public class TerrainGenerator
 {
     public Terrain terrain;
     public TerrainData terrainData;
     public TerrainResources terrainResources;
 
-    void Awake()
+    public TerrainGenerator()
     {
-        UnityEngine.Random.InitState((int)GameSettings.seed);
-
-
         terrainData = new TerrainData();
         terrainData.heightmapResolution = GameSettings.terrainHeightmapRes;
         terrainData.alphamapResolution = GameSettings.terrainAlphamapRes + 1;
         Vector3 terrainSize = new Vector3(GameSettings.terrainRes, GameSettings.terrainMaxAltitude, GameSettings.terrainRes);
         terrainData.size = terrainSize; // this HAS to be set after heightmapResolution to work !!
-        float terrainCoordMax = terrainData.bounds.max.x;
+    }
 
+    public void Generate()
+    {
         GameObject terrainObject = Terrain.CreateTerrainGameObject(terrainData);
-        terrain = terrainObject.GetComponent<Terrain>();
 
+        terrain = terrainObject.GetComponent<Terrain>();
         terrainResources = new TerrainResources(terrain, terrainData);
         this.generateBiomes();
 
@@ -97,14 +96,13 @@ public class MyTerrain : MonoBehaviour
             }
         }
         terrainData.SetAlphamaps(0, 0, layersHelper.GetAlphaMaps());
-        print("Tree count:" + terrainData.treeInstanceCount);
     }
 
     // Generate terrain height map using Perlin noise
     private void generateHeightsMap()
     {
         float waveFreq1 = (30 + GameSettings.seed % 60) / 100;
-        NoiseMapGeneration noiseMapGeneration = GetComponent<NoiseMapGeneration>();
+        NoiseMapGenerator noiseMapGeneration = new NoiseMapGenerator();
         Wave[] waves = new Wave[] {
             new Wave(GameSettings.seed, waveFreq1, 1f),
         };
@@ -118,11 +116,8 @@ public class MyTerrain : MonoBehaviour
     // Add an object (grounded) at the given terrain coordinates
     public void addObject(Vector3 pos, GameObject prefab, bool applyGravity)
     {
-        float objHeight = terrainData.GetHeight((int)(pos.x * GameSettings.factor_t2a), (int)(pos.z * GameSettings.factor_t2a));
-        pos.y += objHeight; // pos.y would usuaally be zero but maybe contain an offset value
-
         // Create the object
-        var obj = Instantiate(prefab, pos, Quaternion.identity);
+        var obj = MonoBehaviour.Instantiate(prefab, pos, Quaternion.identity);
 
         // We want the obkect to obey gravity ...
         if (applyGravity)

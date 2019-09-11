@@ -9,7 +9,7 @@ public class GameSettings : MonoBehaviour
     public static float playerRunSpeed = 30;
     public static float playerCrouchedSpeed = 2f;
     public static float playerFallSpeed = 5f;
-    public static float playerJumForce = 5f;
+    public static float playerJumForce = 8f;
     public static float playerStandHeight = 1.6f;
     public static float playerCrouchedHeight = 1;
     public static float mouseSensitivity = 5;
@@ -28,5 +28,4 @@ public class GameSettings : MonoBehaviour
     public static float factor_t2a = terrainAlphamapRes / terrainRes;
     public static float factor_h2a = terrainAlphamapRes / terrainHeightmapRes;
     public static float factor_a2h = terrainHeightmapRes / terrainAlphamapRes;
-
 }

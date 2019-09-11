@@ -16,7 +16,7 @@ public enum Biome
 
 public class BiomeHelper
 {
-    private MyTerrain myTerrain;
+    private TerrainGenerator terrainGenerator;
     private Terrain terrain;
     private TerrainData terrainData;
     private Vector2Int hotSpot, wetSpot;
@@ -24,9 +24,9 @@ public class BiomeHelper
     private float tilePosJitter = 1f / GameSettings.terrainAlphamapRes;
     private TerrainResources terrainResources;
 
-    public BiomeHelper(MyTerrain myTerrain)
+    public BiomeHelper(TerrainGenerator myTerrain)
     {
-        this.myTerrain = myTerrain;
+        this.terrainGenerator = new TerrainGenerator();
         this.terrain = myTerrain.terrain;
         this.terrainData = myTerrain.terrainData;
         this.terrainResources = myTerrain.terrainResources;
@@ -142,9 +142,9 @@ public class BiomeHelper
 
     internal void AddRockToTile(TerrainTile tile)
     {
-        Vector3 pos = new Vector3(tile.terrainPos.x, 0, tile.terrainPos.y);
+        Vector3 pos = new Vector3(tile.terrainPos.x, tile.floaAltitude * GameSettings.terrainMaxAltitude, tile.terrainPos.y);
         GameObject rock = terrainResources.RandomRock();
-        myTerrain.addObject(pos, terrainResources.RandomRock(), false);
+        terrainGenerator.addObject(pos, terrainResources.RandomRock(), false);
         tile.rock = rock;
     }
 }

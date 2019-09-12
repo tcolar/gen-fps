@@ -14,15 +14,14 @@ public class InputHandler
     private Vector3 curDirection = new Vector3(0, 0, 0);
     private Vector2 curLookDir;
 
-    public static int midScreen = Screen.width / 2;
-    public bool isMobile;
+    private int midScreen = Screen.width / 2;
+    private bool isMobile = SystemInfo.deviceType == DeviceType.Handheld;
 
     public InputHandler(CharacterController cc, Transform player, Transform fpCamera)
     {
         this.cc = cc;
         playerCamera = new PlayerCamera(player);
         playerMovement = new PlayerMovement(cc, player, fpCamera);
-        isMobile = SystemInfo.deviceType == DeviceType.Handheld;
     }
 
     public void Update()
@@ -94,12 +93,10 @@ public class InputHandler
                         {
                             curDirection.x = -1;
                         }
-                        if (touch.position.y - curTouchBase.y > 200)
+
+                        if (touch.position.y - curTouchBase.y > 60)
                         {
-                            curDirection.z = 3; // running fwd
-                        }
-                        else if (touch.position.y - curTouchBase.y > 60)
-                        {
+                            playerMovement.Run(touch.position.y - curTouchBase.y > 200);
                             curDirection.z = 1;
                         }
                         else if (touch.position.y - curTouchBase.y < -60)

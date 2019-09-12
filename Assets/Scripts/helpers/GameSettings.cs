@@ -6,7 +6,7 @@ public class GameSettings : MonoBehaviour
 {
     public static float seed = 9876;
     public static float playerWalkSpeed = 5f;
-    public static float playerRunSpeed = 30;
+    public static float playerRunSpeed = 15f;
     public static float playerCrouchedSpeed = 2f;
     public static float playerFallSpeed = 5f;
     public static float playerJumForce = 8f;

@@ -12,9 +12,9 @@ public class InputHandler
     private PlayerMovement playerMovement;
     private Vector2 curTouchBase;
     private Vector3 curDirection = new Vector3(0, 0, 0);
-    private Vector2 curLookAt = new Vector2(0, 0);
+    private Vector2 curLookDir;
 
-    public static int midScreen = Screen.height / 2;
+    public static int midScreen = Screen.width / 2;
     public bool isMobile;
 
     public InputHandler(CharacterController cc, Transform player, Transform fpCamera)
@@ -57,7 +57,10 @@ public class InputHandler
             playerCamera.LockUnlock();
         }
         this.UpdatePlayerLookDirection();
-        playerCamera.TurnCamera(curLookAt, !isMobile);
+        if (curLookDir.magnitude != 0)
+        {
+            playerCamera.TurnCamera(curLookDir, !isMobile);
+        }
     }
 
     public void UpdatePlayerDirection()
@@ -127,13 +130,14 @@ public class InputHandler
                 Touch touch = Input.GetTouch(i);
                 if (touch.position.x < midScreen) continue;
 
-                curLookAt = new Vector2(touch.deltaPosition.y, touch.deltaPosition.x);
+                curLookDir = new Vector2(touch.deltaPosition.y, touch.deltaPosition.x);
                 return;
             }
+            curLookDir = new Vector2(0, 0);
         }
         else
         {
-            curLookAt = new Vector2(Input.GetAxis(MouseAxis.MOUSE_Y), Input.GetAxis(MouseAxis.MOUSE_X));
+            curLookDir = new Vector2(Input.GetAxis(MouseAxis.MOUSE_Y), Input.GetAxis(MouseAxis.MOUSE_X));
         }
     }
 }

@@ -4,6 +4,11 @@
     Extedned the list ad added Nature/terrain/Standard
     https://answers.unity.com/questions/919590/unable-to-find-shaders-used-for-the-terrain-engine.html
 
-* Debugging with adb
-    adb deices -> to list and check device is there
-    check logs : adb logcat | grep -i unity
+* create canvas from code
+* on/off buttons
+* 360 skybox
+* tree collisions + tree width
+* at least one weapon
+* shoot at things
+* backpack / pickup items
+* bad guys

@@ -22,14 +22,15 @@ public class BiomeHelper
     private Vector2Int hotSpot, wetSpot;
     private float hotRange, wetRange;
     private float tilePosJitter = 1f / GameSettings.terrainAlphamapRes;
-    private TerrainResources terrainResources;
+    private ResourceManagerMain rm;
 
     public BiomeHelper(TerrainGenerator myTerrain)
     {
-        this.terrainGenerator = new TerrainGenerator();
+        this.terrainGenerator = myTerrain;
+        this.rm = myTerrain.rm;
         this.terrain = myTerrain.terrain;
         this.terrainData = myTerrain.terrainData;
-        this.terrainResources = myTerrain.terrainResources;
+        // this.terrainResources = myTerrain.terrainResources;
         var res = GameSettings.terrainAlphamapRes;
         // Randomly put a wet spot (avoid the edges to have more chances of wet/hot interactions)
         wetSpot = new Vector2Int(res / 4 + Random.Range(0, res / 2), res / 4 + Random.Range(0, res / 2));
@@ -85,7 +86,7 @@ public class BiomeHelper
         { // don't put stuff n the map's edges
             return;
         }
-        var trees = terrainResources.trees;
+        var trees = rm.trees;
         int rand = Random.Range(0, 40);
         if (tile.biome != Biome.LAVA && rand > 38)
         {
@@ -143,8 +144,8 @@ public class BiomeHelper
     internal void AddRockToTile(TerrainTile tile)
     {
         Vector3 pos = new Vector3(tile.terrainPos.x, tile.floaAltitude * GameSettings.terrainMaxAltitude, tile.terrainPos.y);
-        GameObject rock = terrainResources.RandomRock();
-        terrainGenerator.addObject(pos, terrainResources.RandomRock(), false);
+        GameObject rock = rm.RandomRock();
+        terrainGenerator.addObject(pos, rm.RandomRock(), false);
         tile.rock = rock;
     }
 }

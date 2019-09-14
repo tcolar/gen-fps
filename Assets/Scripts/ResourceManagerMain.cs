@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Handles loading the terrain resources
-public class TerrainResources
+// Handles loading the resources
+public class ResourceManagerMain : MonoBehaviour
 {
     public Texture2D textureGrass;
     public Texture2D textureWater;
@@ -18,13 +18,18 @@ public class TerrainResources
     public GameObject prefabTreeFir;
     public GameObject prefabTreePoplar;
 
+    public Sprite spriteCrouchOn;
+    public Sprite spriteCrouchOff;
+
     public MyTrees trees;
     public GameObject[] rocks;
 
-    Shader treeShader = Shader.Find("Nature/SpeedTree");
+    //Shader treeShader;
 
-    public TerrainResources(Terrain terrain, TerrainData terrainData)
+    public void Awake()
     {
+        //treeShader = Shader.Find("Nature/SpeedTree");
+
         textureGrass = LoadTexture("layers/grass");
         textureWater = LoadTexture("layers/water");
         textureSnowy = LoadTexture("layers/snow");
@@ -36,6 +41,9 @@ public class TerrainResources
         prefabTreeOak = LoadPrefab("Prefabs/trees/Oak_tree");
         prefabTreeFir = LoadPrefab("Prefabs/trees/Fir_tree");
 
+        spriteCrouchOff = LoadSprite("ui/crouch");
+        spriteCrouchOn = LoadSprite("ui/crouch_on");
+
         rocks = new GameObject[4] {
             LoadPrefab("Prefabs/rocks/rock1"),
             LoadPrefab("Prefabs/rocks/rock2"),
@@ -46,8 +54,6 @@ public class TerrainResources
         {
             rock.transform.localScale = new Vector3(3, 3, 3);
         }
-
-        trees = instantiateTrees(terrain, terrainData);
     }
 
     private Texture2D LoadTexture(string texturePath)
@@ -60,6 +66,16 @@ public class TerrainResources
         return texture;
     }
 
+    private Sprite LoadSprite(string spritePath)
+    {
+        Sprite sprite = Resources.Load<Sprite>(spritePath);
+        if (sprite == null)
+        {
+            throw new System.Exception("Missing sprite: " + spritePath);
+        }
+        return sprite;
+    }
+
     private GameObject LoadPrefab(string prefabPath)
     {
         GameObject prefab = Resources.Load<GameObject>(prefabPath);
@@ -70,7 +86,7 @@ public class TerrainResources
         return prefab;
     }
 
-    public MyTrees instantiateTrees(Terrain terrain, TerrainData terrainData)
+    public void instantiateTrees(Terrain terrain, TerrainData terrainData)
     {
         MyTrees trees = new MyTrees();
         TreePrototype[] protos = new TreePrototype[] {
@@ -82,7 +98,7 @@ public class TerrainResources
         trees.palmTree = instantiateTree(0);
         trees.firTree = instantiateTree(1);
         trees.oakTree = instantiateTree(2);
-        return trees;
+        this.trees = trees;
     }
 
     private TreePrototype createTreePrototype(GameObject treePrefab)

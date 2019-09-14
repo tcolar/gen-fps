@@ -7,7 +7,9 @@ public class GameMain : MonoBehaviour
     public void Awake()
     {
         UnityEngine.Random.InitState((int)GameSettings.seed);
-        TerrainGenerator terrain = new TerrainGenerator();
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
+        ResourceManagerMain rm = GetComponent<ResourceManagerMain>();
+        TerrainGenerator terrain = new TerrainGenerator(rm);
         terrain.Generate();
     }
 }

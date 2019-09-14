@@ -7,10 +7,11 @@ public class TerrainGenerator
 {
     public Terrain terrain;
     public TerrainData terrainData;
-    public TerrainResources terrainResources;
+    public ResourceManagerMain rm;
 
-    public TerrainGenerator()
+    public TerrainGenerator(ResourceManagerMain rm)
     {
+        this.rm = rm;
         terrainData = new TerrainData();
         terrainData.heightmapResolution = GameSettings.terrainHeightmapRes;
         terrainData.alphamapResolution = GameSettings.terrainAlphamapRes + 1;
@@ -23,7 +24,7 @@ public class TerrainGenerator
         GameObject terrainObject = Terrain.CreateTerrainGameObject(terrainData);
 
         terrain = terrainObject.GetComponent<Terrain>();
-        terrainResources = new TerrainResources(terrain, terrainData);
+        rm.instantiateTrees(terrain, terrainData);
         this.generateBiomes();
 
         //ApplyFogSettings();
@@ -37,14 +38,14 @@ public class TerrainGenerator
     private Dictionary<Biome, Texture2D> GetLayers()
     {
         Dictionary<Biome, Texture2D> layers = new Dictionary<Biome, Texture2D>();
-        layers[Biome.GRASSLAND] = terrainResources.textureGrass;
-        layers[Biome.SNOWY] = terrainResources.textureSnowy;
-        layers[Biome.LAVA] = terrainResources.textureWater;
-        layers[Biome.ROCKY] = terrainResources.textureRocky;
-        layers[Biome.TUNDRA] = terrainResources.textureTundra;
-        layers[Biome.DESERT] = terrainResources.textureSand;
-        layers[Biome.WOODLAND] = terrainResources.textureGrass;
-        layers[Biome.FOREST] = terrainResources.textureGrass;
+        layers[Biome.GRASSLAND] = rm.textureGrass;
+        layers[Biome.SNOWY] = rm.textureSnowy;
+        layers[Biome.LAVA] = rm.textureWater;
+        layers[Biome.ROCKY] = rm.textureRocky;
+        layers[Biome.TUNDRA] = rm.textureTundra;
+        layers[Biome.DESERT] = rm.textureSand;
+        layers[Biome.WOODLAND] = rm.textureGrass;
+        layers[Biome.FOREST] = rm.textureGrass;
         return layers;
     }
 

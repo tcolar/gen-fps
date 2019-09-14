@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 /*
 Control the player camera (lookAt), analog via Mouse or Touch motion
  */
-public class InputHandler
+public class InputMain : MonoBehaviour
 {
     private CharacterController cc;
+    private ResourceManagerMain rm;
     private PlayerCamera playerCamera;
     private PlayerMovement playerMovement;
     private Vector2 curTouchBase;
@@ -15,17 +18,38 @@ public class InputHandler
     private Vector2 curLookDir;
 
     private int midScreen = Screen.width / 2;
-    private bool isMobile = SystemInfo.deviceType == DeviceType.Handheld;
+    private bool isMobile;
 
-    public InputHandler(CharacterController cc, Transform player, Transform fpCamera)
+    private bool enableTouchUi = true; //isMobile
+
+    // touch
+    private bool touchCrouched;
+    private bool touchFire;
+    private Image crouchImage;
+
+    public void Awake()
     {
-        this.cc = cc;
-        playerCamera = new PlayerCamera(player);
-        playerMovement = new PlayerMovement(cc, player, fpCamera);
+        rm = GameObject.FindObjectOfType<ResourceManagerMain>();
+        isMobile = SystemInfo.deviceType == DeviceType.Handheld;
+        cc = GameObject.FindObjectOfType<CharacterController>();
+        crouchImage = GameObject.Find("Crouch").GetComponent<Image>();
+        var player = GameObject.Find("Player");
+        var fpCamera = GameObject.Find("Player Camera");
+        playerCamera = new PlayerCamera(player.transform);
+        playerMovement = new PlayerMovement(cc, player.transform, fpCamera.transform);
+        if (!enableTouchUi)
+        {
+            GameObject.Find("UiCanvas").SetActive(false);
+        }
     }
 
     public void Update()
     {
+        if (enableTouchUi)
+        {
+            HandleTouchButtons();
+        }
+
         // Player Movement
         this.UpdatePlayerDirection();
         if (Input.GetKeyDown(KeyCode.Space))
@@ -136,5 +160,51 @@ public class InputHandler
         {
             curLookDir = new Vector2(Input.GetAxis(MouseAxis.MOUSE_Y), Input.GetAxis(MouseAxis.MOUSE_X));
         }
+    }
+
+    public void HandleTouchButtons()
+    {
+        for (int i = 0; i != Input.touchCount; i++)
+        {
+            Touch touch = Input.GetTouch(i);
+
+            // check if in button
+            switch (touch.phase)
+            {
+                case TouchPhase.Began:
+                    MonoBehaviour.print(" " + touch.position.x + " " + touch.position.y);
+                    if (touch.position.x > Screen.width - 100 && touch.position.y < 100)
+                    {
+                        playerMovement.Jump();
+                    }
+                    else if (touch.position.x > Screen.width - 200 && touch.position.y < 100)
+                    {
+                        touchCrouched = !touchCrouched;
+                        playerMovement.Crouch(touchCrouched);
+                    }
+                    break;
+                case TouchPhase.Ended:
+                    break;
+            }
+        }
+    }
+
+    public void EventJumpClicked()
+    {
+        print("jumped");
+        playerMovement.Jump();
+    }
+
+    public void EventCrouchClicked()
+    {
+        touchCrouched = !touchCrouched;
+        print("crouched");
+        crouchImage.sprite = touchCrouched ? rm.spriteCrouchOn : rm.spriteCrouchOff;
+        playerMovement.Crouch(touchCrouched);
+    }
+
+    public void EventFire(bool on)
+    {
+        touchFire = on;
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 /*
-Control the player camera (lookAt), analog via Mouse or Touch motion
+Handles Mouse / keyboard / Touch events
  */
 public class InputMain : MonoBehaviour
 {
@@ -22,21 +22,22 @@ public class InputMain : MonoBehaviour
 
     private bool enableTouchUi = true; //isMobile
 
-    // touch
+    // touch state
     private bool touchCrouched;
-    private bool touchFire;
-    private Image crouchImage;
+    private bool touchFiring;
+    private Image crouchedImage;
 
     public void Awake()
     {
         rm = ResourceManager.GetInstance();
         isMobile = SystemInfo.deviceType == DeviceType.Handheld;
         cc = GameObject.FindObjectOfType<CharacterController>();
-        crouchImage = GameObject.Find("Crouch").GetComponent<Image>();
+        crouchedImage = GameObject.Find("Crouch").GetComponent<Image>();
         var player = GameObject.Find("Player");
         var fpCamera = GameObject.Find("Player Camera");
         playerCamera = new PlayerCamera(player.transform);
         playerMovement = new PlayerMovement(cc, player.transform, fpCamera.transform);
+
         if (!enableTouchUi)
         {
             GameObject.Find("UiCanvas").SetActive(false);
@@ -45,13 +46,30 @@ public class InputMain : MonoBehaviour
 
     public void Update()
     {
-        if (enableTouchUi)
-        {
-            HandleTouchButtons();
-        }
-
-        // Player Movement
+        // Player Movement (D pad) via keyboard or touch
         this.UpdatePlayerDirection();
+
+        // keyboard modes (crouch / jump / run)
+        this.handleKeyboardEvents();
+
+        playerMovement.Move(curDirection);
+
+        // Camera aiming direction (Mouse or touch screen)
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            playerCamera.LockUnlock();
+        }
+        this.UpdatePlayerLookDirection();
+
+        if (curLookDir.magnitude != 0)
+        {
+            playerCamera.TurnCamera(curLookDir, !isMobile);
+        }
+    }
+
+    // Keyboard events, other than AWSD
+    public void handleKeyboardEvents()
+    {
         if (Input.GetKeyDown(KeyCode.Space))
         {
             playerMovement.Jump();
@@ -72,20 +90,9 @@ public class InputMain : MonoBehaviour
         {
             playerMovement.Crouch(false);
         }
-        playerMovement.Move(curDirection);
-
-        // Camera direction
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            playerCamera.LockUnlock();
-        }
-        this.UpdatePlayerLookDirection();
-        if (curLookDir.magnitude != 0)
-        {
-            playerCamera.TurnCamera(curLookDir, !isMobile);
-        }
     }
 
+    // Handle Player movement 
     public void UpdatePlayerDirection()
     {
         if (isMobile)
@@ -141,7 +148,7 @@ public class InputMain : MonoBehaviour
         }
     }
 
-
+    // Handle Player Camera aiming
     public void UpdatePlayerLookDirection()
     {
         if (isMobile)
@@ -162,49 +169,22 @@ public class InputMain : MonoBehaviour
         }
     }
 
-    public void HandleTouchButtons()
-    {
-        for (int i = 0; i != Input.touchCount; i++)
-        {
-            Touch touch = Input.GetTouch(i);
-
-            // check if in button
-            switch (touch.phase)
-            {
-                case TouchPhase.Began:
-                    MonoBehaviour.print(" " + touch.position.x + " " + touch.position.y);
-                    if (touch.position.x > Screen.width - 100 && touch.position.y < 100)
-                    {
-                        playerMovement.Jump();
-                    }
-                    else if (touch.position.x > Screen.width - 200 && touch.position.y < 100)
-                    {
-                        touchCrouched = !touchCrouched;
-                        playerMovement.Crouch(touchCrouched);
-                    }
-                    break;
-                case TouchPhase.Ended:
-                    break;
-            }
-        }
-    }
+    // Touch button event handlers
 
     public void EventJumpClicked()
     {
-        print("jumped");
         playerMovement.Jump();
     }
 
     public void EventCrouchClicked()
     {
         touchCrouched = !touchCrouched;
-        print("crouched");
-        crouchImage.sprite = touchCrouched ? rm.spriteCrouchOn : rm.spriteCrouchOff;
+        crouchedImage.sprite = touchCrouched ? rm.spriteCrouchOn : rm.spriteCrouchOff;
         playerMovement.Crouch(touchCrouched);
     }
 
     public void EventFire(bool on)
     {
-        touchFire = on;
+        touchFiring = on;
     }
 }

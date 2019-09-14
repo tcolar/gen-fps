@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Handles loading the resources
-public class ResourceManagerMain : MonoBehaviour
+public class ResourceManager
 {
     public Texture2D textureGrass;
     public Texture2D textureWater;
@@ -24,12 +24,22 @@ public class ResourceManagerMain : MonoBehaviour
     public MyTrees trees;
     public GameObject[] rocks;
 
-    //Shader treeShader;
+    Shader treeShader;
 
-    public void Awake()
+    private static ResourceManager instance;
+
+    public static ResourceManager GetInstance()
     {
-        //treeShader = Shader.Find("Nature/SpeedTree");
+        if (instance == null)
+        {
+            instance = new ResourceManager();
+        }
+        return instance;
+    }
 
+    private ResourceManager()
+    {
+        treeShader = Shader.Find("Nature/SpeedTree");
         textureGrass = LoadTexture("layers/grass");
         textureWater = LoadTexture("layers/water");
         textureSnowy = LoadTexture("layers/snow");

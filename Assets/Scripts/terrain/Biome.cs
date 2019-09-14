@@ -22,7 +22,7 @@ public class BiomeHelper
     private Vector2Int hotSpot, wetSpot;
     private float hotRange, wetRange;
     private float tilePosJitter = 1f / GameSettings.terrainAlphamapRes;
-    private ResourceManagerMain rm;
+    private ResourceManager rm;
 
     public BiomeHelper(TerrainGenerator myTerrain)
     {

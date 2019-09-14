@@ -10,7 +10,7 @@ Control the player camera (lookAt), analog via Mouse or Touch motion
 public class InputMain : MonoBehaviour
 {
     private CharacterController cc;
-    private ResourceManagerMain rm;
+    private ResourceManager rm;
     private PlayerCamera playerCamera;
     private PlayerMovement playerMovement;
     private Vector2 curTouchBase;
@@ -29,7 +29,7 @@ public class InputMain : MonoBehaviour
 
     public void Awake()
     {
-        rm = GameObject.FindObjectOfType<ResourceManagerMain>();
+        rm = ResourceManager.GetInstance();
         isMobile = SystemInfo.deviceType == DeviceType.Handheld;
         cc = GameObject.FindObjectOfType<CharacterController>();
         crouchImage = GameObject.Find("Crouch").GetComponent<Image>();

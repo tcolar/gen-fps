@@ -7,9 +7,9 @@ public class TerrainGenerator
 {
     public Terrain terrain;
     public TerrainData terrainData;
-    public ResourceManagerMain rm;
+    public ResourceManager rm;
 
-    public TerrainGenerator(ResourceManagerMain rm)
+    public TerrainGenerator(ResourceManager rm)
     {
         this.rm = rm;
         terrainData = new TerrainData();

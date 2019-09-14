@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 3777c2609a2482a48a60ef07326b3646, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: b8a7135813c35ea4c98611614187d320, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.52252585, g: 0.5676687, b: 0.6194487, a: 1}
+  m_IndirectSpecularColor: {r: 0.6490339, g: 0.6823603, b: 0.72502923, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -355,7 +355,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.5
+  near clip plane: 0.01
   far clip plane: 2000
   field of view: 60
   orthographic: 0
@@ -853,13 +853,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2
-  m_Radius: 1.5
+  m_Height: 1.8
+  m_Radius: 0.6
   m_SlopeLimit: 45
   m_StepOffset: 0.3
-  m_SkinWidth: 0.08
+  m_SkinWidth: 0.2
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1.6, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &1472820468
 GameObject:
   m_ObjectHideFlags: 0
@@ -1097,7 +1097,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1829697964}
   - component: {fileID: 1829697963}
-  - component: {fileID: 1829697962}
   - component: {fileID: 1829697961}
   - component: {fileID: 1829697960}
   m_Layer: 0
@@ -1116,14 +1115,6 @@ AudioListener:
   m_GameObject: {fileID: 1829697959}
   m_Enabled: 1
 --- !u!124 &1829697961
-Behaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1829697959}
-  m_Enabled: 1
---- !u!92 &1829697962
 Behaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

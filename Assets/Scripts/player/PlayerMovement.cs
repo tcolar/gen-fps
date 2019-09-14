@@ -35,16 +35,22 @@ public class PlayerMovement
         vertVelocity -= GameSettings.gravity * Time.deltaTime;
         moveDirection.y = vertVelocity * Time.deltaTime;
 
-        if (cc.transform.position.x + moveDirection.x <= minPositon
-             || cc.transform.position.x + moveDirection.x >= maxPosition)
+        if (cc.transform.position.x + moveDirection.x <= minPositon)
         {
-            moveDirection.x = 0;
+            moveDirection.x = minPositon - cc.transform.position.x;
+        }
+        else if (cc.transform.position.x + moveDirection.x >= maxPosition)
+        {
+            moveDirection.x = maxPosition - cc.transform.position.x;
         }
 
-        if (cc.transform.position.z + moveDirection.z <= minPositon
-            || cc.transform.position.z + moveDirection.z >= maxPosition)
+        if (cc.transform.position.z + moveDirection.z <= minPositon)
         {
-            moveDirection.z = 0;
+            moveDirection.z = minPositon - cc.transform.position.z;
+        }
+        else if (cc.transform.position.z + moveDirection.z >= maxPosition)
+        {
+            moveDirection.z = maxPosition - cc.transform.position.z;
         }
 
         cc.Move(moveDirection);

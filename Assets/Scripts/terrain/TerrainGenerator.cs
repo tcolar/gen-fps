@@ -73,6 +73,8 @@ public class TerrainGenerator
         int hmx, hmz;
         float height;
         float jitter = 1f / GameSettings.terrainAlphamapRes;
+        float[,] flatHeight = new float[1, 1];
+        flatHeight[0, 0] = 0.5f;
         for (int z = 0; z < GameSettings.terrainAlphamapRes; z++)
         {
             for (int x = 0; x < GameSettings.terrainAlphamapRes; x++)
@@ -86,13 +88,11 @@ public class TerrainGenerator
 
                 layersHelper.SetAt(x, z, biome);
 
-                if (height < 0.5f)
+                if (height < flatHeight[0, 0])
                 {
-                    height = 0.5f;
+                    height = flatHeight[0, 0];
                     // Flaten the low lands, to get to ~50% of flat areas (easier to build on) 
-                    float[,] map = new float[1, 1];
-                    map[0, 0] = height;
-                    terrainData.SetHeights(hmx, hmz, map);
+                    terrainData.SetHeights(hmx, hmz, flatHeight);
                 }
 
                 // Create a tile (at alphamap location) with items on it according to it's biome

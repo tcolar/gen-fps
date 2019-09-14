@@ -83,7 +83,7 @@ public class BiomeHelper
     {
         if (tile.pos.x == 0 || tile.pos.x >= GameSettings.terrainAlphamapRes - 1
         || tile.pos.y == 0 || tile.pos.y >= GameSettings.terrainAlphamapRes - 1)
-        { // don't put stuff n the map's edges
+        { // don't put stuff on the map's edges
             return;
         }
         var trees = rm.trees;

@@ -31,6 +31,9 @@ public class TerrainGenerator
         ApplyGrassAndTreesSettings();
 
         terrain.Flush();
+        // for some reason this is needed for the tree colliders to work ....
+        terrain.GetComponent<TerrainCollider>().enabled = false;
+        terrain.GetComponent<TerrainCollider>().enabled = true;
         terrainObject.SetActive(true);
     }
 
